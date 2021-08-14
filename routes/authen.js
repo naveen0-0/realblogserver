@@ -32,17 +32,17 @@ router.route('/login').post( async (req,res) => {
         if(user){
             if(user.password === password){
                 jwt.sign({ username : username },process.env.ACCESS_TOKEN,(err,token) => {
-                    if(err) return res.send({ statusload: false, msg:"Error while creating token" ,user:{ username:"",email:"",loggedIn:false}})
+                    if(err) return res.send({ statusload: false, msg:"Error while creating token"})
                     res.send({ statusload: true, msg:"Successfully logged in",token:token,user:{ username:user.username,email:user.email,loggedIn:true}})
                 })
             }else{
-                return res.send({ statusload: false, msg:"Incorrect Password",user:{ username:"",email:"",loggedIn:false}})
+                return res.send({ statusload: false, msg:"Incorrect Password"})
             }
         }else{
-            return res.send({ statusload: false, msg:"Incorrect Username",user:{ username:"",email:"",loggedIn:false}})
+            return res.send({ statusload: false, msg:"Incorrect Username"})
         }
     } catch (error) {
-        return res.send({ statusload: false, msg:"Error logging in",user:{ username:"",email:"",loggedIn:false}})
+        return res.send({ statusload: false, msg:"Error logging in"})
     }
 })
 
