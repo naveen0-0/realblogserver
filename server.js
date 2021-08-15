@@ -4,9 +4,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const authRoutes = require('./routes/authen');
 const dotenv = require('dotenv')
-
+const authRoutes = require('./routes/authen');
+const apiRoutes = require('./routes/api')
 //* App Initialization
 const app = express();
 
@@ -21,6 +21,7 @@ dotenv.config()
 
 //*Routes
 app.use('/auth',authRoutes)
+app.use('/api',apiRoutes)
 
 //* MongoDB Connection
 const MONGO = process.env.MONGO || "mongodb://localhost/blogreal";

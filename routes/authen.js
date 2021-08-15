@@ -49,14 +49,21 @@ router.route('/login').post( async (req,res) => {
 
 router.route('/getuser').get( async (req,res) => {
     const logintoken = req.headers.authorization
-    jwt.verify(logintoken,process.env.ACCESS_TOKEN,async (err,decoded) => {
-        if(err) return res.send({statusload:false,msg:"error getting the user"})
-        const user = await User.findOne({ username : decoded.username })
-        res.send({
-            statusload:true,
-            user:{ username : user.username,email:user.email,loggedIn:true}
+    if(logintoken){
+        jwt.verify(logintoken,process.env.ACCESS_TOKEN,async (err,decoded) => {
+            if(err) return res.send({statusload:false,msg:"error getting the user"})
+            const user = await User.findOne({ username : decoded.username })
+            return res.send({
+                statusload:true,
+                user:{ username : user.username,email:user.email,loggedIn:true}
+            })
         })
-    })
+    }else{
+        res.send({
+            statusload:false,
+            user:{ username : "",email:"",loggedIn:false}
+        })
+    }
 })
 
 module.exports = router;
