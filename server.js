@@ -19,6 +19,10 @@ app.use(cookieParser())
 app.use(cors())
 dotenv.config()
 
+app.get('/',(req,res)=>{
+        res.send("BlogReal Application")
+})
+
 //*Routes
 app.use('/auth',authRoutes)
 app.use('/api',apiRoutes)
