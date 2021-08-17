@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const {commentSchema} = require('./Comment')
 
 const RequiredString = {
     type:String,
@@ -11,7 +12,9 @@ const blogSchema = new Schema({
     keywordone:RequiredString,
     keywordtwo:RequiredString,
     keywordthree:RequiredString,
-    username:RequiredString
+    username:RequiredString,
+    comments:[commentSchema],
+    url:RequiredString
 },{
     timestamps:true
 })

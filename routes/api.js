@@ -4,9 +4,9 @@ const { checkToken } = require('../middleware/middleware');
 
 //* Create a new blog
 router.route('/newblog').post(checkToken,async (req,res)=>{
-    const { title, description, keywordone, keywordtwo, keywordthree } = req.body;
+    const { title, description, keywordone, keywordtwo, keywordthree, url } = req.body;
     try {
-        const blog = await Blog.create({ title, description, keywordone, keywordtwo, keywordthree,username:req.user.username })
+        const blog = await Blog.create({ title, description, keywordone, keywordtwo, keywordthree,username:req.user.username,url })
         res.send({ statusload:true, msg : "Blog created successfully",blog:blog})
     } catch (error) {
         console.log(error);
@@ -33,6 +33,25 @@ router.route('/blog/:id').get( async (req,res)=>{
         res.send({statusload:true,blog:blog})
     } catch (error) {
         res.send({statusload:false,blog:{}})
+    }
+})
+
+router.route('/comment/:id').post( checkToken,async (req,res)=>{
+    const { id } = req.params;
+
+    try {
+        let blog = await Blog.updateOne({ _id :id }, {
+            $push : {
+                comments : {
+                    username : req.user.username,
+                    comment:req.body.comment
+                }
+            }
+        })
+        res.send({ statusload : true, comment : req.body.comment })
+        
+    } catch (error) {
+        res.send({ statusload : false })
     }
 })
 
