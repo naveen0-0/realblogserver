@@ -55,4 +55,25 @@ router.route('/comment/:id').post( checkToken,async (req,res)=>{
     }
 })
 
+//*Personal Blogs
+router.route('/ownblogs').get(checkToken,async (req,res) => {
+    try {
+        let blogs = await Blog.find({ username : req.user.username })
+        res.send({ statusload:true,blogs:blogs })
+    } catch (error) {
+        res.send({ statusload:false,blogs:{} })
+    }
+})
+
+
+//* Blogs that i commented on
+router.route('/commentedblogs').get(checkToken,async (req,res) => {
+    try {
+        let blogs = await Blog.find({ "comments" : { username: req.user.username }})
+        res.send({ statusload:true,blogs:blogs })
+    } catch (error) {
+        res.send({ statusload:false,blogs:{} })
+    }
+})
+
 module.exports = router;
