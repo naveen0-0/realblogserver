@@ -69,10 +69,43 @@ router.route('/ownblogs').get(checkToken,async (req,res) => {
 //* Blogs that i commented on
 router.route('/commentedblogs').get(checkToken,async (req,res) => {
     try {
-        let blogs = await Blog.find({ "comments" : { username: req.user.username }})
+        let blogs = await Blog.find({ "comments" : { "username": req.user.username }})
         res.send({ statusload:true,blogs:blogs })
     } catch (error) {
         res.send({ statusload:false,blogs:{} })
+    }
+})
+
+//* Check whether the user is allowed to edit the blog or not or not
+router.route('/editcheck/:id').get(checkToken,async (req,res)=>{
+    const { id } = req.params;
+    const blog = await Blog.findOne({ _id:id, username: req.user.username });
+    if(blog){
+        return res.send({ statusload : true, blog:blog })
+    }
+    return res.send({ statusload : false })
+})
+
+//* Edit blog
+router.route('/blog/edit/:id').put(checkToken,async (req,res) => {
+    const { title, description, keywordone, keywordtwo, keywordthree, url } = req.body;
+    try {
+        const blog = await Blog.updateOne({ _id: req.params.id },{ title, description, keywordone, keywordtwo, keywordthree, url, username: req.user.username })
+        res.send({ statusload: true, msg: "Blog Edited Successfully", blog:{ title, description, keywordone, keywordtwo, keywordthree, url} })
+    } catch (error) {
+        console.log(error);
+        res.send({ statusload: false })
+    }
+})
+
+//* Delete blog
+router.route('/blog/delete/:id').delete(checkToken, async (req,res) => {
+    try {
+        let blog = await Blog.findByIdAndDelete({_id : req.params.id })
+        res.send({ statusload:true})
+    } catch (error) {
+        console.log(error)
+        res.send({ statusload:false})
     }
 })
 
