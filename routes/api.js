@@ -35,6 +35,7 @@ router.route('/blog/:id').get( async (req,res)=>{
     }
 })
 
+//*Comment on a specific post
 router.route('/comment/:id').post(checkToken,async (req,res)=>{
     const { id } = req.params;
 
