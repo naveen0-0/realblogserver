@@ -9,9 +9,9 @@ const RequiredString = {
 const blogSchema = new Schema({
     title:RequiredString,
     description:RequiredString,
-    keywordone:RequiredString,
-    keywordtwo:RequiredString,
-    keywordthree:RequiredString,
+    keyword1:RequiredString,
+    keyword2:RequiredString,
+    keyword3:RequiredString,
     username:RequiredString,
     comments:[commentSchema],
     url:RequiredString

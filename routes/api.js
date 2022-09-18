@@ -4,12 +4,11 @@ const { checkToken } = require('../middleware/middleware');
 
 //* Create a new blog
 router.route('/newblog').post(checkToken,async (req,res)=>{
-    const { title, description, keywordone, keywordtwo, keywordthree, url } = req.body;
+    const { title, description, keyword1, keyword2, keyword3, url } = req.body;
     try {
-        const blog = await Blog.create({ title, description, keywordone, keywordtwo, keywordthree,username:req.user.username,url })
+        const blog = await Blog.create({ title, description, keyword1, keyword2, keyword3,username:req.user.username,url })
         res.send({ statusload:true, msg : "Blog created successfully",blog:blog})
     } catch (error) {
-        console.log(error);
         res.send({ statusload:false, msg : "Unable to create a blog"})
     }
 })
@@ -18,7 +17,7 @@ router.route('/newblog').post(checkToken,async (req,res)=>{
 //* All blogs
 router.route('/allblogs').get( async (req,res)=>{
     try {
-        const blogs = await Blog.find();
+        const blogs = await Blog.find({}).select({title:1,keyword1:1,keyword2:1,keyword3:1,url:1, username:1, description:1});
         res.send({ statusload:true,blogs:blogs })
     } catch (error) {
         res.send({ statusload:false,blogs:[]})
@@ -36,7 +35,7 @@ router.route('/blog/:id').get( async (req,res)=>{
     }
 })
 
-router.route('/comment/:id').post( checkToken,async (req,res)=>{
+router.route('/comment/:id').post(checkToken,async (req,res)=>{
     const { id } = req.params;
 
     try {
@@ -48,9 +47,10 @@ router.route('/comment/:id').post( checkToken,async (req,res)=>{
                 }
             }
         })
-        res.send({ statusload : true, comment : req.body.comment })
+        res.send({ statusload : true, comment : req.body.comment, username:req.user.username })
         
     } catch (error) {
+        console.log(error)
         res.send({ statusload : false })
     }
 })
