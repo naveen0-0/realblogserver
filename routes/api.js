@@ -80,22 +80,25 @@ router.route('/commentedblogs').get(checkToken,async (req,res) => {
 //* Check whether the user is allowed to edit the blog or not or not
 router.route('/editcheck/:id').get(checkToken,async (req,res)=>{
     const { id } = req.params;
-    const blog = await Blog.findOne({ _id:id, username: req.user.username });
-    if(blog){
-        return res.send({ statusload : true, blog:blog })
+    try {
+        const blog = await Blog.findOne({ _id:id, username: req.user.username },{ title:1, description:1, keyword1:1, keyword2:1, keyword3:1, url:1 });
+        if(blog){
+            return res.send({ statusload : true, blog:blog })
+        }
+    } catch (error) {
+        return res.send({ statusload : false })
     }
-    return res.send({ statusload : false })
 })
 
 //* Edit blog
 router.route('/blog/edit/:id').put(checkToken,async (req,res) => {
-    const { title, description, keywordone, keywordtwo, keywordthree, url } = req.body;
+    const { title, description, keyword1, keyword2, keyword3, url } = req.body;
     try {
-        const blog = await Blog.updateOne({ _id: req.params.id },{ title, description, keywordone, keywordtwo, keywordthree, url, username: req.user.username })
-        res.send({ statusload: true, msg: "Blog Edited Successfully", blog:{ title, description, keywordone, keywordtwo, keywordthree, url} })
+        const blog = await Blog.updateOne({ _id: req.params.id },{ title, description, keyword1, keyword2, keyword3, url })
+        res.send({ statusload: true, msg: "Blog Updated Successfully" })
     } catch (error) {
         console.log(error);
-        res.send({ statusload: false })
+        res.send({ statusload: false, msg:"Error updating the blog" })
     }
 })
 
