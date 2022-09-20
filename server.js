@@ -29,9 +29,9 @@ app.use('/api',apiRoutes)
 
 //* MongoDB Connection
 const MONGO = process.env.MONGO || "mongodb://localhost/blogreal";
-const options = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify:false }
 
-mongoose.connect(MONGO,options)
+
+mongoose.connect(MONGO)
         .then(() => console.log("Mongo connection successful"))
         .catch(() => console.log("Mongo connection failure"))
 
