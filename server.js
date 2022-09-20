@@ -30,8 +30,8 @@ app.use('/api',apiRoutes)
 //* MongoDB Connection
 const MONGO = process.env.MONGO || "mongodb://localhost/blogreal";
 
-
-mongoose.connect(MONGO)
+const options = { useNewUrlParser:true, useUnifiedTopology:true }
+mongoose.connect(MONGO,options)
         .then(() => console.log("Mongo connection successful"))
         .catch(() => console.log("Mongo connection failure"))
 
