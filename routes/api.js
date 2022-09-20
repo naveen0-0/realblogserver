@@ -108,7 +108,6 @@ router.route('/blog/delete/:id').delete(checkToken, async (req,res) => {
         let blog = await Blog.findByIdAndDelete({_id : req.params.id })
         res.send({ statusload:true})
     } catch (error) {
-        console.log(error)
         res.send({ statusload:false})
     }
 })
