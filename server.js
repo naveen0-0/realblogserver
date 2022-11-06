@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(helmet())
 app.use(morgan('tiny'))
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({ origin: "https://blogreal.netlify.app" }));
 dotenv.config()
 
 app.get('/',(req,res)=>{
